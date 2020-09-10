@@ -9,10 +9,22 @@
   </head>
   <body>
     <div id="main-container">
-      <header id="header">header</header>
-      <section id="content-container">content</section>
+      <header id="header">Covid-19 Statistics</header>
+      <section id="content-container">
+        <div class="chart-container"><canvas id="myChart"></canvas></div>
+        <div class="buttons-container">
+          <div class="chartType-buttons-container">
+            chartType-buttons-container
+          </div>
+          <div class="continent-buttons-container">
+            continent-buttons-container
+          </div>
+          <div class="country-buttons-container">country-buttons-container</div>
+        </div>
+      </section>
       <footer id="footer">footer</footer>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="./index.js"></script>
   </body>
 </html>
