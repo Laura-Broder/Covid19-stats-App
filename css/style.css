@@ -211,6 +211,6 @@ i {
   }
   .chart-container,
   .dataArea-container {
-    /* max-height: 20vh; */
+    max-height: 40vh;
   }
 }
