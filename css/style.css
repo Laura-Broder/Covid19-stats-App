@@ -31,7 +31,7 @@ body {
 .dataArea-container {
   position: relative;
   margin: auto;
-  max-height: 35vh;
+  max-height: 45vh;
   max-width: 90vw;
   background-color: #ffffff;
   /* padding: 2vh 1vw; */
@@ -41,7 +41,7 @@ body {
 .chart-container {
   position: relative;
   margin: auto;
-  max-height: 35vh;
+  max-height: 45vh;
   max-width: 90vw;
   background-color: #ffffff;
   /* padding: 2vh 1vw; */
@@ -131,7 +131,7 @@ body {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding: 2vh 2vw;
+  padding: 1vh 2vw;
   background-color: #1e5f74;
 }
 .buttons-container {
@@ -140,7 +140,7 @@ body {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  padding: 2vh 2vw;
+  padding: 1vh 2vw;
 }
 .buttons-container.country {
   display: flex;
@@ -211,6 +211,6 @@ i {
   }
   .chart-container,
   .dataArea-container {
-    max-height: 20vh;
+    /* max-height: 20vh; */
   }
 }
