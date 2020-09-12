@@ -12,11 +12,15 @@ function creatNewChart(currentData, infoType, continent) {
       datasets: [
         {
           label: `${infoType} in ${continent}`,
+          backgroundColor: "#1d2d506e",
+          borderColor: "#133b5c",
+          borderWidth: "1",
           data: currentData.dataValues,
         },
       ],
     },
     options: {
+      maintainAspectRatio: false,
       scales: {
         yAxes: [
           {
@@ -100,8 +104,8 @@ function updateChart(newData) {
   );
 }
 function handleCountryChoice(event) {
-  const chosenCountry = event.target.value;
   spinnerContainerElement.classList.remove("hidden");
+  const chosenCountry = event.target.value;
   countryDataContainer.classList.remove("hidden");
   displayCountryData(chosenCountry);
   spinnerContainerElement.classList.add("hidden");
@@ -114,13 +118,15 @@ async function displayCountryData(chosenCountryName) {
   const countryData = await getCountryData(countryCode);
   const countryObj = createCountryObj(countryData);
   const html = `
-  <h2>${countryObj.name}</h2>
-  <h3>Total Confirmed Cases: ${countryObj.confirmed}</h3>
-  <h3>New Confirmed Cases: ${countryObj.newConfirmed}</h3>
-  <h3>Total Critical Cases: ${countryObj.critical}</h3>
-  <h3>Total Deaths: ${countryObj.deaths}</h3>
-  <h3>New Deaths: ${countryObj.newDeaths}</h3>
-  <h3>Total Recovered: ${countryObj.recovered}</h3>`;
+  <h2 class="countryData-header">${countryObj.name}</h2>
+  <div class="countryData-content">
+    <h3>Total Confirmed Cases: ${countryObj.confirmed}</h3>
+    <h3>New Confirmed Cases: ${countryObj.newConfirmed}</h3>
+    <h3>Total Critical Cases: ${countryObj.critical}</h3>
+    <h3>Total Deaths: ${countryObj.deaths}</h3>
+    <h3>New Deaths: ${countryObj.newDeaths}</h3>
+    <h3>Total Recovered: ${countryObj.recovered}</h3>
+  </div>`;
   countryDataElement.innerHTML = html;
   console.log(countryObj);
 }
@@ -146,6 +152,8 @@ function createCountryObj(countryData) {
 // do on load of window
 // ----------------------------------------------------------
 async function onLoad() {
+  spinnerContainerElement.classList.remove("hidden");
+
   // chart type buttons
   const chartTypesArray = ["confirmed", "critical", "deaths", "recovered"];
   creatButtonsGroup(chartTypesArray, "infoType");
@@ -156,6 +164,7 @@ async function onLoad() {
   currentData = await createChartData("world", "confirmed");
   // fill chart and country dropdown
   covidChartElement = creatNewChart(currentData, "confirmed", "world");
+  spinnerContainerElement.classList.add("hidden");
 }
 // ----------------------------------------------------------
 // pulling data from the APIs
