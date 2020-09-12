@@ -2,7 +2,6 @@
 // chart functions
 // ----------------------------------------------------------
 function creatNewChart(currentData, infoType, continent) {
-  console.log(currentData);
   const covidChart1 = document.createElement("canvas");
   covidChart1.setAttribute("id", "#covidChart");
   chartContainer.appendChild(covidChart1);
@@ -31,36 +30,11 @@ function creatNewChart(currentData, infoType, continent) {
   });
   return covidChart1;
 }
-function addData(label, data) {
-  newChartInstance.data.labels.push(label);
-  newChartInstance.data.datasets[0].data.push(data);
-  newChartInstance.update();
-  console.log(newChartInstance.data.labels);
-  console.log(newChartInstance.data.datasets[0].data);
-}
 function replaceAllData(labelsArray, dataArray, infoType, continent) {
-  console.log(labelsArray);
-  console.log(dataArray);
   newChartInstance.data.labels = labelsArray;
   newChartInstance.data.datasets[0].data = dataArray;
   newChartInstance.data.datasets[0].label = `${infoType} in ${continent}`;
   newChartInstance.update();
-  console.log(newChartInstance);
-}
-function removeAllData() {
-  newChartInstance.data.labels = [];
-  newChartInstance.data.datasets[0].data = [];
-  newChartInstance.update();
-  console.log(newChartInstance.data.labels);
-  console.log(newChartInstance.data.datasets[0].data);
-}
-function removeChart() {
-  covidChartElement.remove();
-  newChartInstance.destroy();
-
-  // for (child of chartContainer.children) {
-  //   child.remove();
-  // }
 }
 // ----------------------------------------------------------
 // create buttons:
@@ -76,7 +50,6 @@ function createButtonElement(name, innerText, btnType) {
   btn.addEventListener("click", handleClick);
   document.querySelector(`.${btnType}`).appendChild(btn);
 }
-// ----------------------------------------------------------
 // create buttons group function
 function creatButtonsGroup(array, btnType) {
   array.forEach((button) => {
@@ -86,6 +59,7 @@ function creatButtonsGroup(array, btnType) {
 }
 // ----------------------------------------------------------
 // create dropdown country list
+// ----------------------------------------------------------
 function fillDropdownCountries(countriesArray) {
   countriesList.addEventListener("change", handleCountryChoice);
   countriesList.innerHTML =
@@ -96,57 +70,41 @@ function fillDropdownCountries(countriesArray) {
   }
 }
 // ----------------------------------------------------------
-// event listener function
+// event listener functions
+// ----------------------------------------------------------
 // click a button handler
-function handleClick(event) {
+async function handleClick(event) {
+  spinnerContainerElement.classList.remove("hidden");
   const btnName = event.currentTarget.getAttribute("name");
   const btnType = event.currentTarget.getAttribute("data-btnType");
   countryDataContainer.classList.add("hidden");
   if (btnType === "infoType") {
-    changeInfoType(btnName);
+    currentDisplay.infoType = btnName;
   }
   if (btnType === "continent") {
-    changeContinent(btnName);
+    currentDisplay.continent = btnName;
   }
-  // console.log(btnName);
-  // console.log(btnType);
-}
-async function changeInfoType(btnName) {
-  currentDisplay.infoType = btnName;
   const newData = await createChartData(
     currentDisplay.continent,
     currentDisplay.infoType,
   );
-
-  console.log(newData);
-  replaceAllData(
-    newData.dataLabels,
-    newData.dataValues,
-    currentDisplay.infoType,
-    currentDisplay.continent,
-  );
-}
-async function changeContinent(continent) {
-  spinnerContainerElement.classList.remove("hidden");
-
-  currentDisplay.continent = continent;
-  const newData = await createChartData(
-    currentDisplay.continent,
-    currentDisplay.infoType,
-  );
-  console.log(newData);
-  replaceAllData(
-    newData.dataLabels,
-    newData.dataValues,
-    currentDisplay.infoType,
-    currentDisplay.continent,
-  );
+  updateChart(newData);
   spinnerContainerElement.classList.add("hidden");
+}
+function updateChart(newData) {
+  replaceAllData(
+    newData.dataLabels,
+    newData.dataValues,
+    currentDisplay.infoType,
+    currentDisplay.continent,
+  );
 }
 function handleCountryChoice(event) {
   const chosenCountry = event.target.value;
+  spinnerContainerElement.classList.remove("hidden");
   countryDataContainer.classList.remove("hidden");
   displayCountryData(chosenCountry);
+  spinnerContainerElement.classList.add("hidden");
 }
 async function displayCountryData(chosenCountryName) {
   const countryIndex = currentData.dataLabels.findIndex(
@@ -166,11 +124,11 @@ async function displayCountryData(chosenCountryName) {
   countryDataElement.innerHTML = html;
   console.log(countryObj);
 }
-
+// ----------------------------------------------------------
+// pull relevant data of a country from the API to an object
+// ----------------------------------------------------------
 function createCountryObj(countryData) {
   if (countryData) {
-    // countryCoronaData.data.latest_data[infoType];
-    // console.log(countryData);
     const countryObj = {
       name: countryData.data.name,
       code: countryData.data.code,
@@ -191,17 +149,14 @@ async function onLoad() {
   // chart type buttons
   const chartTypesArray = ["confirmed", "critical", "deaths", "recovered"];
   creatButtonsGroup(chartTypesArray, "infoType");
-
   // continent buttons
   const continentsArray = ["Asia", "Europe", "Africa", "Americas", "world"];
   creatButtonsGroup(continentsArray, "continent");
-
   // fetch data of default chart display (confirmed world)
   currentData = await createChartData("world", "confirmed");
   // fill chart and country dropdown
   covidChartElement = creatNewChart(currentData, "confirmed", "world");
 }
-
 // ----------------------------------------------------------
 // pulling data from the APIs
 // ----------------------------------------------------------
@@ -213,14 +168,14 @@ async function fetchUrl(url) {
     return data;
   } else return false;
 }
+async function getCountryData(countryCode) {
+  const url = getUrl.byCountryCorona(countryCode);
+  // get data from urls
+  return await fetchUrl(url);
+}
 // ----------------------------------------------------------
 // create new data object for the chart.
 // ----------------------------------------------------------
-// returns:
-// let currentData = {
-//   dataLabels: dataLabelsArray,
-//   dataValues: dataValuesArray,
-// };
 async function createChartData(continent, infoType) {
   // go over country codes in given continent. for each code fetch relevant info and country name. put each in the relevant array.
   spinnerContainerElement.classList.remove("hidden");
@@ -268,15 +223,11 @@ async function createChartData(continent, infoType) {
     dataValues: dataValuesArray,
   };
 }
+// ----------------------------------------------------------
 
-async function getCountryData(countryCode) {
-  const url = getUrl.byCountryCorona(countryCode);
-  // get data from urls
-  return await fetchUrl(url);
-}
 // ----------------------------------------------------------
 // ----------------------------------------------------------
-// ----------------------------------------------------------
+
 // ----------------------------------------------------------
 // select DOM elements
 // ----------------------------------------------------------
@@ -291,28 +242,23 @@ const countriesList = document.querySelector("select#countries");
 const countryDataContainer = document.querySelector(".countryData-container");
 const spinnerContainerElement = document.querySelector(".spinner-container");
 const countryDataElement = document.querySelector(".countryData");
-
 // ----------------------------------------------------------
 // set current display to default
 // ----------------------------------------------------------
-let currentDisplay = { infoType: "confirmed", continent: "world" };
+let currentDisplay = {
+  infoType: "confirmed",
+  continent: "world",
+};
 // ----------------------------------------------------------
 // define global chart variables
 // ----------------------------------------------------------
 let newChartInstance;
 let covidChartElement;
-// ----------------------------------------------------------
-// data for testing the chart:
-// ----------------------------------------------------------
-
-let dataLabels = [];
-let dataValues = [];
-let dataCode = [];
 
 let currentData = {
-  dataLabels,
-  dataValues,
-  dataCode,
+  dataLabels: [],
+  dataValues: [],
+  dataCode: [],
 };
 // ----------------------------------------------------------
 // urls object
