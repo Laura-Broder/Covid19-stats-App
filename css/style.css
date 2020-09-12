@@ -149,6 +149,7 @@ body {
 }
 .country.buttons-container > label {
   font-weight: 500;
+  padding: 1vh 1vw;
 }
 select#countries {
   max-width: 100%;
@@ -161,13 +162,23 @@ select#countries {
   border: none;
   font-weight: 700;
 }
+
 #footer {
-  text-align: left;
-  padding: 3vh 3vw;
-  max-width: 90vw;
-  margin: auto;
-  max-height: 100%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 2vh 3vw;
   position: relative;
+}
+#footer > p {
+  margin-left: 10px;
+}
+a {
+  color: inherit;
+}
+i {
+  width: 4vw;
+  /* height: 40px; */
 }
 @keyframes virus {
   0% {
