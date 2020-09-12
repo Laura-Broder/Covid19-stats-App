@@ -10,7 +10,7 @@ body {
   position: relative;
   font-family: "Montserrat", sans-serif;
   background-color: #1d2d50;
-  color: #fcdab7;
+  color: #fbeee1;
 }
 #header {
   max-width: 90vw;
@@ -49,7 +49,7 @@ body {
   border-top-left-radius: 20px;
   padding: 2vh 1vw;
 }
-.countryData-container,
+
 .spinner-container {
   position: absolute;
   top: 0;
@@ -67,34 +67,55 @@ body {
   animation: virus 3s ease infinite alternate;
   height: 80%;
 }
-
-.countryData-content {
-  display: flex;
-  max-width: 100%;
-
-  text-align: left;
+.countryData-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   transition: all 0.3s;
-  color: #1d2d50;
+  padding: 2vh 1vw;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
 .countryData {
+  border-radius: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
-  max-height: 35vh;
+  max-height: 50vh;
   max-width: 100%;
   transform: translate(-50%, -50%);
   text-align: center;
   transition: all 0.3s;
   color: #1d2d50;
-}
-.countryData h3 {
-  padding: 2vh 2vw;
-  border-top: 1px solid #1e5f746b;
   background-color: white;
+}
+.countryData-content {
+  display: flex;
+  max-width: 100%;
+  /* text-align: left; */
+  transition: all 0.3s;
+  color: #1d2d50;
+}
+.countryData h5 {
+  padding: 1vh 1vw;
+  border-top: 1px solid #1e5f746b;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #1e5f746b;
+}
+.countryData h5:last-child {
+  border-right: none;
 }
 .countryData h2 {
   padding: 2vh 2vw;
-  background-color: white;
+}
+.countryData p {
+  padding: 3px;
 }
 
 .buttons-main-container {
@@ -126,11 +147,17 @@ body {
   justify-content: space-around;
   flex-wrap: wrap;
 }
+.country.buttons-container > label {
+  font-weight: 500;
+}
+select#countries {
+  max-width: 100%;
+}
 .btn {
   /* width: 130px; */
   padding: 1vh 2vw;
   border-radius: 10px;
-  background-color: #fcdab7;
+  background-color: #fbeee1;
   border: none;
   font-weight: 700;
 }
@@ -154,3 +181,8 @@ body {
 /* media queries */
 
 /* make smaller font for smaller screens */
+@media only screen and (max-width: 600px) {
+  :root {
+    font-size: 62.5%;
+  }
+}

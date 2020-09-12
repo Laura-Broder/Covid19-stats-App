@@ -120,12 +120,24 @@ async function displayCountryData(chosenCountryName) {
   const html = `
   <h2 class="countryData-header">${countryObj.name}</h2>
   <div class="countryData-content">
-    <h3>Total Confirmed Cases: ${countryObj.confirmed}</h3>
-    <h3>New Confirmed Cases: ${countryObj.newConfirmed}</h3>
-    <h3>Total Critical Cases: ${countryObj.critical}</h3>
-    <h3>Total Deaths: ${countryObj.deaths}</h3>
-    <h3>New Deaths: ${countryObj.newDeaths}</h3>
-    <h3>Total Recovered: ${countryObj.recovered}</h3>
+    <h5>Total Confirmed Cases: 
+      <p>${countryObj.confirmed}</p>
+    </h5>
+    <h5>New Confirmed Cases: 
+      <p>${countryObj.newConfirmed}</p>
+    </h5>
+    <h5>Total Critical Cases: 
+      <p>${countryObj.critical}</p>
+    </h5>
+    <h5>Total Deaths: 
+      <p>${countryObj.deaths}</p>
+    </h5>
+    <h5>New Deaths: 
+      <p>${countryObj.newDeaths}</p>
+    </h5>
+    <h5>Total Recovered: 
+      <p>${countryObj.recovered}</p>
+    </h5>
   </div>`;
   countryDataElement.innerHTML = html;
   console.log(countryObj);
