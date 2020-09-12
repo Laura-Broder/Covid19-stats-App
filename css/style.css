@@ -64,7 +64,7 @@ body {
 }
 .spinner {
   border-radius: 20px;
-  animation: virus 3s ease infinite alternate;
+  animation: virus 3s ease-in-out infinite alternate;
   height: 80%;
 }
 .countryData-container {
@@ -144,12 +144,12 @@ body {
 }
 .buttons-container.country {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
 }
 .country.buttons-container > label {
   font-weight: 500;
-  padding: 1vh 1vw;
+  padding: 1vh 3vw;
 }
 select#countries {
   max-width: 100%;
@@ -161,6 +161,13 @@ select#countries {
   background-color: #fbeee1;
   border: none;
   font-weight: 700;
+  box-shadow: 5px 3px 5px #071724;
+}
+.btn:active {
+  box-shadow: 5px 0 5px #000000;
+  border: none;
+  transform: translateY(4px);
+  transform: translateX(4px);
 }
 
 #footer {
@@ -185,10 +192,10 @@ i {
 }
 @keyframes virus {
   0% {
-    transform: rotate(0);
+    transform: translateX(-20vw) rotate(0);
   }
   100% {
-    transform: rotate(180deg);
+    transform: translateX(20vw) rotate(180deg);
   }
 }
 
