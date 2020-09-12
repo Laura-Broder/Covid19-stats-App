@@ -88,6 +88,8 @@ function creatButtonsGroup(array, btnType) {
 // create dropdown country list
 function fillDropdownCountries(countriesArray) {
   countriesList.addEventListener("change", handleCountryChoice);
+  countriesList.innerHTML =
+    '<option value="SelectOption" selected>-- Select an Country --</option>';
   for (const country of countriesArray) {
     const html = `<option value="${country}">${country}</option>`;
     countriesList.insertAdjacentHTML("beforeend", html);
@@ -99,7 +101,7 @@ function fillDropdownCountries(countriesArray) {
 function handleClick(event) {
   const btnName = event.currentTarget.getAttribute("name");
   const btnType = event.currentTarget.getAttribute("data-btnType");
-  countryDataContainer.hidden = true;
+  countryDataContainer.classList.add("hidden");
   if (btnType === "infoType") {
     changeInfoType(btnName);
   }
@@ -125,6 +127,8 @@ async function changeInfoType(btnName) {
   );
 }
 async function changeContinent(continent) {
+  spinnerContainerElement.classList.remove("hidden");
+
   currentDisplay.continent = continent;
   const newData = await createChartData(
     currentDisplay.continent,
@@ -137,10 +141,11 @@ async function changeContinent(continent) {
     currentDisplay.infoType,
     currentDisplay.continent,
   );
+  spinnerContainerElement.classList.add("hidden");
 }
 function handleCountryChoice(event) {
   const chosenCountry = event.target.value;
-  countryDataContainer.removeAttribute("hidden");
+  countryDataContainer.classList.remove("hidden");
   displayCountryData(chosenCountry);
 }
 async function displayCountryData(chosenCountryName) {
@@ -149,9 +154,35 @@ async function displayCountryData(chosenCountryName) {
   );
   const countryCode = currentData.dataCode[countryIndex];
   const countryData = await getCountryData(countryCode);
-  console.log(countryData);
+  const countryObj = createCountryObj(countryData);
+  const html = `
+  <h2>${countryObj.name}</h2>
+  <h3>Total Confirmed Cases: ${countryObj.confirmed}</h3>
+  <h3>New Confirmed Cases: ${countryObj.newConfirmed}</h3>
+  <h3>Total Critical Cases: ${countryObj.critical}</h3>
+  <h3>Total Deaths: ${countryObj.deaths}</h3>
+  <h3>New Deaths: ${countryObj.newDeaths}</h3>
+  <h3>Total Recovered: ${countryObj.recovered}</h3>`;
+  countryDataElement.innerHTML = html;
+  console.log(countryObj);
+}
 
-  // getCountryData(countryCode);
+function createCountryObj(countryData) {
+  if (countryData) {
+    // countryCoronaData.data.latest_data[infoType];
+    // console.log(countryData);
+    const countryObj = {
+      name: countryData.data.name,
+      code: countryData.data.code,
+      confirmed: countryData.data.latest_data.confirmed,
+      newConfirmed: countryData.data.today.confirmed,
+      critical: countryData.data.latest_data.critical,
+      deaths: countryData.data.latest_data.deaths,
+      newDeaths: countryData.data.latest_data.critical,
+      recovered: countryData.data.today.deaths,
+    };
+    return countryObj;
+  }
 }
 // ----------------------------------------------------------
 // do on load of window
@@ -169,8 +200,6 @@ async function onLoad() {
   currentData = await createChartData("world", "confirmed");
   // fill chart and country dropdown
   covidChartElement = creatNewChart(currentData, "confirmed", "world");
-  // create dropdown of countries
-  fillDropdownCountries(currentData.dataLabels);
 }
 
 // ----------------------------------------------------------
@@ -194,6 +223,7 @@ async function fetchUrl(url) {
 // };
 async function createChartData(continent, infoType) {
   // go over country codes in given continent. for each code fetch relevant info and country name. put each in the relevant array.
+  spinnerContainerElement.classList.remove("hidden");
   let dataLabelsArray = [];
   let dataValuesArray = [];
   let dataCodeArray = [];
@@ -226,6 +256,12 @@ async function createChartData(continent, infoType) {
   console.log(dataCodeArray);
   console.log(dataLabelsArray);
   console.log(dataValuesArray);
+  // create dropdown of countries
+
+  fillDropdownCountries(dataLabelsArray);
+
+  spinnerContainerElement.classList.add("hidden");
+
   return {
     dataCode: dataCodeArray,
     dataLabels: dataLabelsArray,
@@ -253,6 +289,8 @@ const buttonsContinentContainer = document.querySelector(
 const chartContainer = document.querySelector(".chart-container");
 const countriesList = document.querySelector("select#countries");
 const countryDataContainer = document.querySelector(".countryData-container");
+const spinnerContainerElement = document.querySelector(".spinner-container");
+const countryDataElement = document.querySelector(".countryData");
 
 // ----------------------------------------------------------
 // set current display to default

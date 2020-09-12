@@ -14,8 +14,15 @@
       </header>
       <section id="content-container">
         <div class="chart-container">
-          <div class="countryData-container" hidden>
-            <div class="countryData">countryData</div>
+          <div class="spinner-container">
+            <img
+              class="spinner"
+              src="https://image.flaticon.com/icons/svg/2904/2904131.svg"
+              alt="icon"
+            />
+          </div>
+          <div class="countryData-container hidden">
+            <div class="countryData"></div>
           </div>
           <!-- <canvas id="covidChart"></canvas> -->
         </div>
@@ -27,11 +34,7 @@
           <h3>Choose a Country</h3>
           <div class="country buttons-container">
             <label for="countries">Countries in Selected Region:</label>
-            <select id="countries">
-              <option value="SelectOption" selected>
-                -- Select an Country --
-              </option>
-            </select>
+            <select id="countries"></select>
           </div>
         </div>
       </section>
