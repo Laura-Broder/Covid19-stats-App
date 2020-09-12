@@ -140,13 +140,14 @@ async function displayCountryData(chosenCountryName) {
     </h5>
   </div>`;
   countryDataElement.innerHTML = html;
-  console.log(countryObj);
+  // console.log(countryObj);
 }
 // ----------------------------------------------------------
 // pull relevant data of a country from the API to an object
 // ----------------------------------------------------------
 function createCountryObj(countryData) {
   if (countryData) {
+    // console.log(countryData);
     const countryObj = {
       name: countryData.data.name,
       code: countryData.data.code,
@@ -154,8 +155,8 @@ function createCountryObj(countryData) {
       newConfirmed: countryData.data.today.confirmed,
       critical: countryData.data.latest_data.critical,
       deaths: countryData.data.latest_data.deaths,
-      newDeaths: countryData.data.latest_data.critical,
-      recovered: countryData.data.today.deaths,
+      newDeaths: countryData.data.today.deaths,
+      recovered: countryData.data.latest_data.recovered,
     };
     return countryObj;
   }
