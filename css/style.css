@@ -1,6 +1,17 @@
 body {
-  height: 90vh;
+  max-height: 90vh;
 }
-.main-container {
-  border: 1 px blue;
+footer,
+.buttons-container,
+.main-container,
+.content-container {
+  border: 1px solid blue;
+  max-height: 100%;
+  padding: 10px;
+}
+
+.chart-container {
+  position: relative;
+  border: 1px solid blue;
+  max-height: 100%;
 }
