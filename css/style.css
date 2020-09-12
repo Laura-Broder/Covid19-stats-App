@@ -197,6 +197,6 @@ i {
 /* make smaller font for smaller screens */
 @media only screen and (max-width: 600px) {
   :root {
-    font-size: 62.5%;
+    font-size: 80%;
   }
 }
