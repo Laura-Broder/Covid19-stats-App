@@ -56,6 +56,11 @@ function removeAllData() {
 }
 function removeChart() {
   covidChartElement.remove();
+  newChartInstance.destroy();
+
+  // for (child of chartContainer.children) {
+  //   child.remove();
+  // }
 }
 // ----------------------------------------------------------
 // create buttons:
@@ -82,7 +87,7 @@ function creatButtonsGroup(array, btnType) {
 // ----------------------------------------------------------
 // create dropdown country list
 function fillDropdownCountries(countriesArray) {
-  const countriesList = document.querySelector("#countries");
+  countriesList.addEventListener("change", handleCountryChoice);
   for (const country of countriesArray) {
     const html = `<option value="${country}">${country}</option>`;
     countriesList.insertAdjacentHTML("beforeend", html);
@@ -94,6 +99,7 @@ function fillDropdownCountries(countriesArray) {
 function handleClick(event) {
   const btnName = event.currentTarget.getAttribute("name");
   const btnType = event.currentTarget.getAttribute("data-btnType");
+  countryDataContainer.hidden = true;
   if (btnType === "infoType") {
     changeInfoType(btnName);
   }
@@ -109,6 +115,7 @@ async function changeInfoType(btnName) {
     currentDisplay.continent,
     currentDisplay.infoType,
   );
+
   console.log(newData);
   replaceAllData(
     newData.dataLabels,
@@ -130,6 +137,21 @@ async function changeContinent(continent) {
     currentDisplay.infoType,
     currentDisplay.continent,
   );
+}
+function handleCountryChoice(event) {
+  const chosenCountry = event.target.value;
+  countryDataContainer.removeAttribute("hidden");
+  displayCountryData(chosenCountry);
+}
+async function displayCountryData(chosenCountryName) {
+  const countryIndex = currentData.dataLabels.findIndex(
+    (countryName) => countryName === chosenCountryName,
+  );
+  const countryCode = currentData.dataCode[countryIndex];
+  const countryData = await getCountryData(countryCode);
+  console.log(countryData);
+
+  // getCountryData(countryCode);
 }
 // ----------------------------------------------------------
 // do on load of window
@@ -174,6 +196,7 @@ async function createChartData(continent, infoType) {
   // go over country codes in given continent. for each code fetch relevant info and country name. put each in the relevant array.
   let dataLabelsArray = [];
   let dataValuesArray = [];
+  let dataCodeArray = [];
   // get relevant urls
   if (continent === "world") {
     const worldCoronaUrl = getUrl.allCountriesCorona();
@@ -181,6 +204,7 @@ async function createChartData(continent, infoType) {
     const continentFullCoronaData = await fetchUrl(worldCoronaUrl);
     // save name and value of infoType given
     for (let country of continentFullCoronaData.data) {
+      dataCodeArray.push(country.code);
       dataLabelsArray.push(country.name);
       dataValuesArray.push(country.latest_data[infoType]);
     }
@@ -191,21 +215,28 @@ async function createChartData(continent, infoType) {
     // save name and value of infoType given
     for (let country of continentAllCodes) {
       const code = country.cca2;
-      const url = getUrl.byCountryCorona(code);
-      // get data from urls
-      const countryCoronaData = await fetchUrl(url);
+      countryCoronaData = await getCountryData(code);
       if (countryCoronaData) {
+        dataCodeArray.push(code);
         dataLabelsArray.push(countryCoronaData.data.name);
         dataValuesArray.push(countryCoronaData.data.latest_data[infoType]);
       }
     }
   }
+  console.log(dataCodeArray);
   console.log(dataLabelsArray);
   console.log(dataValuesArray);
   return {
+    dataCode: dataCodeArray,
     dataLabels: dataLabelsArray,
     dataValues: dataValuesArray,
   };
+}
+
+async function getCountryData(countryCode) {
+  const url = getUrl.byCountryCorona(countryCode);
+  // get data from urls
+  return await fetchUrl(url);
 }
 // ----------------------------------------------------------
 // ----------------------------------------------------------
@@ -220,6 +251,9 @@ const buttonsContinentContainer = document.querySelector(
   ".buttons-container.continent",
 );
 const chartContainer = document.querySelector(".chart-container");
+const countriesList = document.querySelector("select#countries");
+const countryDataContainer = document.querySelector(".countryData-container");
+
 // ----------------------------------------------------------
 // set current display to default
 // ----------------------------------------------------------
@@ -235,10 +269,12 @@ let covidChartElement;
 
 let dataLabels = [];
 let dataValues = [];
+let dataCode = [];
 
 let currentData = {
   dataLabels,
   dataValues,
+  dataCode,
 };
 // ----------------------------------------------------------
 // urls object

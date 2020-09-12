@@ -1,17 +1,60 @@
-body {
-  max-height: 90vh;
-}
-footer,
-.buttons-container,
-.main-container,
-.content-container {
+* {
   border: 1px solid blue;
+}
+body {
+  height: 100vh;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+#main-container,
+#content-container {
+  position: relative;
+  max-height: 100%;
+}
+
+footer,
+.buttons-main-container,
+.buttons-container,
+#main-container,
+#content-container {
   max-height: 100%;
   padding: 10px;
+}
+.buttons-container {
+  /* width: ; */
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.buttons-container.country {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+#footer {
+  text-align: left;
+}
+.btn {
+  width: 100px;
+  padding: 10px 20px;
 }
 
 .chart-container {
   position: relative;
   border: 1px solid blue;
   max-height: 100%;
+}
+.countryData-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.countryData {
+  display: inline-block;
+  margin: 30px;
+  background-color: white;
 }

@@ -9,21 +9,35 @@
   </head>
   <body>
     <div id="main-container">
-      <header id="header">Covid-19 Statistics</header>
+      <header id="header">
+        <h1>Covid-19 Statistics</h1>
+      </header>
       <section id="content-container">
         <div class="chart-container">
+          <div class="countryData-container" hidden>
+            <div class="countryData">countryData</div>
+          </div>
           <!-- <canvas id="covidChart"></canvas> -->
         </div>
-        <div class="buttons-container">
+        <div class="buttons-main-container">
+          <h3>Choose data type</h3>
           <div class="infoType buttons-container"></div>
+          <h3>Choose region</h3>
           <div class="continent buttons-container"></div>
+          <h3>Choose a Country</h3>
           <div class="country buttons-container">
-            <label for="countries">Choose a Country:</label>
-            <select id="countries"></select>
+            <label for="countries">Countries in Selected Region:</label>
+            <select id="countries">
+              <option value="SelectOption" selected>
+                -- Select an Country --
+              </option>
+            </select>
           </div>
         </div>
       </section>
-      <footer id="footer">footer</footer>
+      <footer id="footer">
+        created by Laura Broder. data from (insert API URL)
+      </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="./index.js"></script>
