@@ -208,11 +208,8 @@ async function createChartData(continent, infoType) {
       }
     }
   }
-  console.log(dataCodeArray);
-  console.log(dataLabelsArray);
-  console.log(dataValuesArray);
-  // create dropdown of countries
 
+  // create dropdown of countries
   fillDropdownCountries(dataLabelsArray);
 
   spinnerContainerElement.classList.add("hidden");

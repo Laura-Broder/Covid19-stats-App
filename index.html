@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./css/my-normalize.css" />
     <link rel="stylesheet" href="./css/style.css" />
     <title>My Covid-19 App</title>
@@ -13,7 +17,10 @@
         <h1>Covid-19 Statistics</h1>
       </header>
       <section id="content-container">
-        <div class="chart-container">
+        <div class="dataArea-container">
+          <div class="chart-container">
+            <!-- <canvas id="covidChart"></canvas> -->
+          </div>
           <div class="spinner-container">
             <img
               class="spinner"
@@ -24,7 +31,6 @@
           <div class="countryData-container hidden">
             <div class="countryData"></div>
           </div>
-          <!-- <canvas id="covidChart"></canvas> -->
         </div>
         <div class="buttons-main-container">
           <h3>Choose data type</h3>
