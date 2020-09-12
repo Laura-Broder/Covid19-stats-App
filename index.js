@@ -67,7 +67,7 @@ function creatButtonsGroup(array, btnType) {
 function fillDropdownCountries(countriesArray) {
   countriesList.addEventListener("change", handleCountryChoice);
   countriesList.innerHTML =
-    '<option value="SelectOption" selected>-- Select an Country --</option>';
+    '<option value="SelectOption" selected>-- Select a Country --</option>';
   for (const country of countriesArray) {
     const html = `<option value="${country}">${country}</option>`;
     countriesList.insertAdjacentHTML("beforeend", html);
